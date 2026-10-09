@@ -6,7 +6,8 @@
 #define TEAVM_UNIX 0
 #define TEAVM_APPLE 0
 
-#ifdef _MSC_VER
+/* clang and gcc for mingw define __GNUC__ too, so the target, not the compiler family, decides Windows. */
+#if defined(_MSC_VER) || defined(__MINGW32__)
     #define alignas(n) __declspec(align(n))
     #define restrict __restrict
     #pragma comment (lib,"uuid.lib")
@@ -22,9 +23,12 @@
 
     #undef TEAVM_WINDOWS
     #define TEAVM_WINDOWS 1
-#endif
 
-#if defined(__GNUC__) || defined(__APPLE__)
+    #if defined(__MINGW32__) && !defined(_MSC_VER)
+        /* mingw has no MSVC __assume intrinsic; map it onto the compiler's own */
+        #define __assume(x) __builtin_assume(x)
+    #endif
+#elif defined(__GNUC__) || defined(__APPLE__)
     #undef TEAVM_UNIX
     #define TEAVM_UNIX 1
     #include <stdalign.h>
