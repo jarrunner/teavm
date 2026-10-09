@@ -1,6 +1,8 @@
 #pragma once
 
-#if TEAVM_PSP || defined(__APPLE__)
+/* Apple's libc has no uchar.h, and mingw's declares mbrtoc16/c16rtomb only for the UCRT (_UCRT):
+   an msvcrt build has neither, so it takes the same fallback. */
+#if TEAVM_PSP || defined(__APPLE__) || (defined(__MINGW32__) && !defined(_UCRT))
 
 #include <wchar.h>
 #include <stdint.h>
