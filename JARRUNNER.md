@@ -26,3 +26,9 @@ gradlew :core:publishToMavenLocal :classlib:publishToMavenLocal :tools:core:publ
 ## New upstream release
 
 Cut `<version>-jr` from the new tag, cherry-pick whichever of the commits above upstream has not taken, and publish `<version>-jr.1`.
+
+## Releases on Maven Central
+
+- `0.16.0-jr.1` (2026-10-09): the 20 modules jr needs (`teavm-core`, `teavm-classlib`, `teavm-tooling`, `teavm-interop`, `teavm-platform`, `teavm-jso*`, `teavm-metaprogramming-*`, `teavm-extension-*`, `teavm-relocated-libs-*`), built from this branch at the four commits above.
+
+TeaVM's own JReleaser path (`release.sh`) did not sign on Windows with Git's gpg, so this release was staged with `publishAllPublicationsToTeavmRepository`, signed with gpg (`--pinentry-mode loopback`), and uploaded as a bundle to the Central Portal API. A repeatable release (GitHub Actions) is still to do.
