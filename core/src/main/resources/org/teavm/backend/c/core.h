@@ -176,7 +176,9 @@ static inline void teavm_initializeClass(TeaVM_Class* cls, void (*initializer)()
 #define TEAVM_ARRAY_DATA(array, type) ((type*) TEAVM_ALIGN((((TeaVM_Array*) (array)) + 1), sizeof(type)))
 #define TEAVM_ARRAY_DATAN(array, type) (array != NULL ? TEAVM_ARRAY_DATA(array, type) : NULL)
 #define TEAVM_ARRAY_AT(array, type, index) (((type*) TEAVM_ARRAY_DATA(array, type))[index])
-#define TEAVM_ADDRESS_ADD(address, offset) ((char *) (address) + (offset))
+/* char * only for the arithmetic: the result is void *, like every other Address, so it converts implicitly
+   to a typed pointer parameter of an @Import function. */
+#define TEAVM_ADDRESS_ADD(address, offset) ((void *) ((char *) (address) + (offset)))
 #define TEAVM_STRUCTURE_ADD(structure, address, offset) (((structure*) (address)) + offset)
 
 #define TEAVM_TO_BYTE(i) ((((i) << 24) >> 24))
